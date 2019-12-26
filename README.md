@@ -1,6 +1,6 @@
 # nac-paxnet
 
-> using electron-vue & levelDB
+> using electron-vue & nedb
 
 #### Build Setup
 
