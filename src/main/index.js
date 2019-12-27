@@ -74,6 +74,17 @@ if (gotTheLock) {
 
 app.on('ready', createWindow);
 
+app.on('will-finish-launching', () => {
+  /** automatic reload every 10mins  */
+  const mins = 10;
+  logger.info(`-----start setinterval mins:[${mins}]`);
+  setInterval(() => {
+    if (mainWindow) {
+      mainWindow.reload();
+    }
+  }, mins * 60 * 1000);
+});
+
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
     app.quit();
