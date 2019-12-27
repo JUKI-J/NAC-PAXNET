@@ -25,18 +25,17 @@
             <br/>
             <div class="item">
               <div class="name"><input type="checkbox" id="isSaveID" v-model="isSaveID" true-value="1" false-value="0" @click="fnCheckSaveID($event);" />
-                <label for="isSaveID"></label> ID 저장
+                <label for="isSaveID">ID 저장</label>
               </div>
               <div class="name"><input type="checkbox" id="isAutoRun" v-model="isAutoRun" true-value="1" false-value="0" @click="fnCheckAutoRun($event);"/>
-                <label for="isAutoRun"></label> 자동로그인
+                <label for="isAutoRun">자동로그인</label>
               </div>
               <!-- <div class="name"><input type="checkbox" id="isSystemBoot" v-model="isSystemBoot" true-value="1" false-value="0"/>
                 <label for="isSystemBoot"></label> Windows와 함께 자동실행
               </div> -->
               <!-- <div id="settings" ></div> -->
             </div>
-            <br/>
-            <div class="item login_div">
+            <div class="item login_div" style="margin-top: 5px;">
               <button class="login_btn" v-bind:class="{ active : isActive }" >로그인</button>
             </div>
           </form>

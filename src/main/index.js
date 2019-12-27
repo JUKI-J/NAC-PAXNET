@@ -1,8 +1,11 @@
 import { app, BrowserWindow, ipcMain, globalShortcut } from 'electron' // eslint-disable-line
+import logger from 'electron-log';
 
 import mainService from '../service/mainService';
 import userService from '../service/userService';
+import configService from '../service/configService';
 import User from '../model/user';
+import Config from '../model/config';
 
 /**
  * Set `__static` path to static files in production
@@ -53,6 +56,22 @@ function createWindow() {
   mainWindow.webContents.on('devtools-opened', () => (mainWindow.webContents.focus()));
 }
 
+/** return false : primary instance */
+const gotTheLock = app.makeSingleInstance(() => {
+  if (mainWindow) {
+    logger.info('only for single instance');
+    if (mainWindow.isMinimized()) {
+      mainWindow.restore();
+    }
+    mainWindow.reload();
+    mainWindow.show();
+  }
+});
+
+if (gotTheLock) {
+  app.quit();
+}
+
 app.on('ready', createWindow);
 
 app.on('window-all-closed', () => {
@@ -90,6 +109,16 @@ ipcMain.on('user', async (event) => {
     isSystemBoot: user.isSystemBoot,
   };
   event.sender.send('user-reply', JSON.stringify(data));
+});
+
+/** 인터넷 연결상태 확인 */
+ipcMain.on('config', async (event) => {
+  const config = new Config(await configService.selectConfig());
+  const data = {
+    gwURL: config.gwURL,
+    nacURL: config.nacURL,
+  };
+  event.sender.send('config-reply', JSON.stringify(data));
 });
 
 /**
